@@ -1,8 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 Auth::routes();
+
+Route::get('/upload', function () {
+    Storage::disk('tws3')->put('adobestock_461770718.jpeg', file_get_contents(public_path('adobestock_461770718.jpeg')));
+    return 'Файл загружен!';
+});
 
 Route::group(['namespace'=>'App\Http\Controllers\Admin', 'prefix' => 'adm', "middleware" => "auth"], function() {
     Route::get('/', IndexController::class)->name('admin.index');

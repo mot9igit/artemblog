@@ -60,6 +60,16 @@ return [
             'report' => false,
         ],
 
+        'tws3' => [
+            'driver' => 's3', // Этот параметр остается неизменным
+            'key' => env('TW_ACCESS_KEY_ID'), // Указываем переменную окружения для ключа доступа
+            'secret' => env('TW_SECRET_ACCESS_KEY'), // Указываем переменную окружения для секретного ключа
+            'region' => env('TW_DEFAULT_REGION'), // Регион Timeweb Cloud
+            'bucket' => env('TW_BUCKET'), // Имя бакета
+            'url' => env('TW_URL'), // URL для доступа к бакету
+            'endpoint' => env('TW_ENDPOINT'), // Кастомный endpoint для Timeweb S3
+        ],
+
     ],
 
     /*
