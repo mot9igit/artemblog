@@ -1,0 +1,156 @@
+/*
+Icon classes can be used entirely standalone. They are named after their original file names.
+
+Example usage in HTML:
+
+`display: block` sprite:
+<div class="icon-home"></div>
+
+To change `display` (e.g. `display: inline-block;`), we suggest using a common CSS class:
+
+// CSS
+.icon {
+  display: inline-block;
+}
+
+// HTML
+<i class="icon icon-home"></i>
+*/
+.icon-book {
+  background-image: url(sprite.png);
+  background-position: -217px -144px;
+  width: 63px;
+  height: 70px;
+}
+.icon-bubble-heart {
+  background-image: url(sprite.png);
+  background-position: -69px -145px;
+  width: 72px;
+  height: 67px;
+}
+.icon-content-download {
+  background-image: url(sprite.png);
+  background-position: -217px 0px;
+  width: 66px;
+  height: 72px;
+}
+.icon-crown {
+  background-image: url(sprite.png);
+  background-position: -334px -114px;
+  width: 15px;
+  height: 14px;
+}
+.icon-layers-image {
+  background-image: url(sprite.png);
+  background-position: -60px -217px;
+  width: 60px;
+  height: 60px;
+}
+.icon-left {
+  background-image: url(sprite.png);
+  background-position: -334px 0px;
+  width: 33px;
+  height: 60px;
+}
+.icon-location-user {
+  background-image: url(sprite.png);
+  background-position: -145px 0px;
+  width: 72px;
+  height: 72px;
+}
+.icon-newspaper {
+  background-image: url(sprite.png);
+  background-position: 0px 0px;
+  width: 73px;
+  height: 73px;
+}
+.icon-paint-palette {
+  background-image: url(sprite.png);
+  background-position: -120px -217px;
+  width: 60px;
+  height: 56px;
+}
+.icon-play {
+  background-image: url(sprite.png);
+  background-position: -141px -145px;
+  width: 62px;
+  height: 62px;
+}
+.icon-plus {
+  background-image: url(sprite.png);
+  background-position: -334px -60px;
+  width: 32px;
+  height: 32px;
+}
+.icon-quotes {
+  background-image: url(sprite.png);
+  background-position: -180px -217px;
+  width: 55px;
+  height: 43px;
+}
+.icon-quotes2 {
+  background-image: url(sprite.png);
+  background-position: -334px -92px;
+  width: 26px;
+  height: 22px;
+}
+.icon-remote-control-hand {
+  background-image: url(sprite.png);
+  background-position: -283px 0px;
+  width: 51px;
+  height: 72px;
+}
+.icon-right {
+  background-image: url(sprite.png);
+  background-position: -283px -126px;
+  width: 33px;
+  height: 60px;
+}
+.icon-script {
+  background-image: url(sprite.png);
+  background-position: -145px -72px;
+  width: 72px;
+  height: 72px;
+}
+.icon-settings {
+  background-image: url(sprite.png);
+  background-position: 0px -145px;
+  width: 69px;
+  height: 72px;
+}
+.icon-shield-cross {
+  background-image: url(sprite.png);
+  background-position: -217px -72px;
+  width: 63px;
+  height: 72px;
+}
+.icon-target {
+  background-image: url(sprite.png);
+  background-position: -73px 0px;
+  width: 72px;
+  height: 72px;
+}
+.icon-user {
+  background-image: url(sprite.png);
+  background-position: -283px -72px;
+  width: 50px;
+  height: 54px;
+}
+.icon-wrenches {
+  background-image: url(sprite.png);
+  background-position: -72px -73px;
+  width: 72px;
+  height: 72px;
+}
+.icon-write {
+  background-image: url(sprite.png);
+  background-position: 0px -73px;
+  width: 72px;
+  height: 72px;
+}
+.icon-write1 {
+  background-image: url(sprite.png);
+  background-position: 0px -217px;
+  width: 60px;
+  height: 60px;
+}
