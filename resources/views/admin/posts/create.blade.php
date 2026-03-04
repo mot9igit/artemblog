@@ -31,8 +31,13 @@
             </ul>
         </div>
     @endif
-    <form action="{{ route('admin.posts.store') }}" method="POST">
+    <form action="{{ route('admin.posts.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
+        <div class="mb-3">
+            <label for="post_image" class="form-label">Изображение</label>
+            <input type="file" class="form-control" id="post_image" name="image" accept="image/*"/>
+            @error('image') <div class="valid-feedback"> {{ $message }} </div> @enderror
+        </div>
         <div class="mb-3">
             <label for="post_title" class="form-label">Заголовок</label>
             <input type="text" class="form-control" id="post_title" name="title"/>

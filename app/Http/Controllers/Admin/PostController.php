@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Post\StoreRequest;
+use App\Http\Requests\Admin\Post\UpdateRequest;
 use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -14,9 +17,20 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $posts = Post::latest()->paginate(5);
+        $query = Post::query()->where('published', true);
+        if($search = trim((string)$request->get('search'))) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', '%'.$search.'%')
+                    ->orWhere('content', 'like', '%'.$search.'%');
+            });
+        }
+
+        $posts = $query->orderByDesc('published_at', 'desc')
+            ->orderByDesc('created_at')
+            ->paginate(10)
+            ->withQueryString();
 
         return view('admin.posts.index', compact('posts'));
     }
@@ -32,18 +46,13 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreRequest $request): RedirectResponse
     {
-        $data = $request->validate([
-            "title" => "required|min:3",
-            "slug" => "nullable",
-            "introtext" => "required|min:3",
-            "content" => "required|min:3",
-            "image" => "nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048",
-            "published" => "nullable|boolean",
-            "published_at" => "nullable",
-            "user_id" => "nullable|exists:App\Models\User,id",
-        ]);
+        $data = $request->validated();
+
+        if($request->hasFile('image')){
+            $data["image"] = $request->file('image')->store('posts', 'public');
+        }
 
         $slugBase = Str::slug($data['title']);
         $slug = $slugBase . "-" . rand(1000, 99999);
@@ -74,18 +83,21 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post): RedirectResponse
+    public function update(UpdateRequest $request, Post $post): RedirectResponse
     {
-        $data = $request->validate([
-            "title" => "required|min:3",
-            "slug" => "required|unique:posts,slug",
-            "introtext" => "required|min:10",
-            "content" => "required|min:10",
-            "image" => "required|image|mimes:jpeg,png,jpg,gif,svg|max:2048",
-            "published" => "nullable|boolean",
-            "published_at" => "nullable",
-            "user_id" => "nullable|exists:App\Models\User,id",
-        ]);
+        $data = $request->validated();
+
+        if($request->boolean('remove_image') && $post->image){
+            Storage::disk('public')->delete($post->image);
+            $data['image'] = null;
+        }
+
+        if($request->hasFile('image')){
+            if($post->image){
+                Storage::disk('public')->delete($post->image);
+            }
+            $data["image"] = $request->file('image')->store('posts', 'public');
+        }
 
         $data['published_at'] = $request->has('published') ? now() : null;
 

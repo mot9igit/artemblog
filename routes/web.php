@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => redirect()->route('posts.index'));
 
-Route::prefix('adm')->as('admin.')->group(function () {
+Route::prefix('adm')->as('admin.')->middleware('web')->group(function () {
     Route::resource('posts', AdminPostController::class);
 });
 

@@ -23,7 +23,18 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <a href="{{ route('admin.posts.create') }}" class="btn btn-primary">Новый пост</a>
+            <div class="d-flex align-items-center justify-content-end">
+                <a href="{{ route('admin.posts.create') }}" class="btn btn-primary">Новый пост</a>
+            </div>
+            <form action="{{ route('admin.posts.index') }}" method="get" class="d-flex align-items-center justify-content-between">
+                <div class="">
+                    <label for="search" class="form-label">Поиск</label>
+                    <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}">
+                </div>
+                <div class="">
+                    <button type="submit" class="btn btn-primary">Найти</button>
+                </div>
+            </form>
         </div>
         <div class="card-body">
             <div class="table table-responsive">

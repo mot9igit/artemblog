@@ -19,7 +19,7 @@
                                             <a href="#">Велосипед</a>
                                         </div>
                                         <h2 class="s-post-title effect">
-                                            <a href="#">{{ $post->title }}</a>
+                                            <a href="{{ route("posts.show", $post->slug) }}">{{ $post->title }}</a>
                                         </h2>
                                         <div class="s-meta-date">
                                             <span>{{ $post->published_at?->format('d.m.Y H:i') }}</span>
@@ -27,8 +27,12 @@
                                     </div>
                                     <div class="post-standard-media">
                                         <figure class="s-post-img">
-                                            <a href="#">
-                                                <img src="img/blog-post-1.jpg" alt="post-1">
+                                            <a href="{{ route("posts.show", $post->slug) }}">
+                                                @if($post->image)
+                                                    <img src="{{ $post->image_url }}" alt="post-1">
+                                                @else
+                                                    <img src="/img/no-photo.jpg" alt="post-1">
+                                                @endif
                                             </a>
                                         </figure>
                                     </div>

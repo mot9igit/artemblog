@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no">
+    <base href="/"/>
     <title>@yield('title', 'Artemblog')</title>
     <link rel="stylesheet" href="libs/bootstrap4/css/bootstrap.min.css">
     <link rel="stylesheet" href="libs/owlcarousel2/dist/assets/owl.carousel.min.css">

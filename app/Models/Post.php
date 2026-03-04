@@ -31,4 +31,8 @@ class Post extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function getImageUrlAttribute(): ?string{ // image_url attribute
+        return $this->image ? asset('storage/'. $this->image) : null;
+    }
 }

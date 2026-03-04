@@ -31,8 +31,28 @@
             </ul>
         </div>
     @endif
-    <form action="{{ route('admin.posts.update', $post->id) }}" method="POST">
+    <form action="{{ route('admin.posts.update', $post->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
+        <div class="mb-3">
+            <label for="post_image" class="form-label">Изображение</label>
+            <input type="file" class="form-control" id="post_image" name="image" accept="image/*"/>
+            @error('image') <div class="valid-feedback"> {{ $message }} </div> @enderror
+        </div>
+        @if(isset($post) && $post->image)
+            <div class="mt-3">
+                <span>Текущее изображение:</span>
+                <div class="image">
+                    <img src="{{ $post->image_url }}" class="mt-2" alt=""/>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" value="1" name="remove_image" id="remove_image"/>
+                    <label class="form-check-label" for="form_remove_image">
+                        Удалить изображение
+                    </label>
+                </div>
+            </div>
+        @endif
         <div class="mb-3">
             <label for="post_title" class="form-label">Заголовок</label>
             <input type="text" class="form-control" id="post_title" name="title" value="{{ old('title', $post->title) }}"/>
@@ -67,6 +87,6 @@
                 Опубликован
             </label>
         </div>
-        <button type="submit" class="btn btn-primary">Создать пост</button>
+        <button type="submit" class="btn btn-primary">Редактировать пост</button>
     </form>
 @endsection
