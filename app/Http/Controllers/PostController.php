@@ -3,18 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Repositories\PostRepository\PostRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class PostController extends Controller
 {
+    public function __construct(
+        private PostRepositoryInterface $postRepository
+    ){}
+
     public function index(): View{
-        $posts = Post::where('published', 1)->orderBy('published_at', 'desc')->paginate(5);
+        $posts = $this->postRepository->getPublishedPaginated(10);
         return view('posts.index', compact('posts'));
     }
 
-    public function show(Post $post): View{
-        abort_unless($post->published, 404);
+    public function show(string $slug): View{
+        $post = $this->postRepository->findPublishedBySlugOrFail($slug);
         return view('posts.show', compact('post'));
     }
 }

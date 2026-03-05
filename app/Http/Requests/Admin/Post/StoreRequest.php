@@ -27,7 +27,7 @@ class StoreRequest extends FormRequest
             "introtext" => "required|min:10",
             "content" => "required|min:10",
             "image" => "nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048",
-            "published" => "nullable|boolean",
+            "published" => "sometimes|boolean",
             "published_at" => "nullable",
             "user_id" => "nullable|exists:App\Models\User,id",
         ];
@@ -42,4 +42,12 @@ class StoreRequest extends FormRequest
             'image.image' => 'Файл должен быть изображением',
         ];
     }
+
+    // подготовка данных для валидации
+    public function prepareForValidation(){
+        $this->merge([
+            'published' => $this->boolean('published'),
+        ]);
+    }
+
 }

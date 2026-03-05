@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -21,17 +22,29 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        $postId = $this->route('post');
+        $currentPost = $this->route('post');
         return [
             "title" => "required|min:3",
-            "slug" => "required|unique:posts,slug,{$postId}",
+            "slug" => [
+                'required',
+                Rule::unique('posts', 'slug')
+                    ->ignore($currentPost->slug, 'slug')
+            ],
             "introtext" => "required|min:3",
             "content" => "required|min:3",
             "image" => "nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048",
             "remove_image" => "sometimes|boolean",
-            "published" => "nullable|boolean",
+            "published" => "sometimes|boolean",
             "published_at" => "nullable",
             "user_id" => "nullable|exists:App\Models\User,id",
         ];
+    }
+
+    // подготовка данных для валидации
+    public function prepareForValidation(){
+        $this->merge([
+            'published' => $this->boolean('published'),
+            'remove_image' => $this->boolean('remove_image'),
+        ]);
     }
 }

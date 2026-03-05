@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Post\StoreRequest;
 use App\Http\Requests\Admin\Post\UpdateRequest;
 use App\Models\Post;
+use App\Repositories\PostRepository\PostRepositoryInterface;
+use App\Services\PostService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -14,24 +16,18 @@ use Illuminate\View\View;
 
 class PostController extends Controller
 {
+
+    public function __construct(
+        private PostRepositoryInterface $postRepository,
+        private PostService $postService,
+    ){}
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request): View
     {
-        $query = Post::query()->where('published', true);
-        if($search = trim((string)$request->get('search'))) {
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', '%'.$search.'%')
-                    ->orWhere('content', 'like', '%'.$search.'%');
-            });
-        }
-
-        $posts = $query->orderByDesc('published_at', 'desc')
-            ->orderByDesc('created_at')
-            ->paginate(10)
-            ->withQueryString();
-
+        $posts = $this->postRepository->getAdminPaginatedPosts($request->input('search'), 10);
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -48,19 +44,7 @@ class PostController extends Controller
      */
     public function store(StoreRequest $request): RedirectResponse
     {
-        $data = $request->validated();
-
-        if($request->hasFile('image')){
-            $data["image"] = $request->file('image')->store('posts', 'public');
-        }
-
-        $slugBase = Str::slug($data['title']);
-        $slug = $slugBase . "-" . rand(1000, 99999);
-        $data['slug'] = $slug;
-        $data['published_at'] = $request->has('published') ? now() : null;
-
-        Post::create($data);
-
+        $this->postService->create($request->validated());
         return redirect()->route('admin.posts.index')->with('success', 'Пост успешно создан!');
     }
 
@@ -85,24 +69,7 @@ class PostController extends Controller
      */
     public function update(UpdateRequest $request, Post $post): RedirectResponse
     {
-        $data = $request->validated();
-
-        if($request->boolean('remove_image') && $post->image){
-            Storage::disk('public')->delete($post->image);
-            $data['image'] = null;
-        }
-
-        if($request->hasFile('image')){
-            if($post->image){
-                Storage::disk('public')->delete($post->image);
-            }
-            $data["image"] = $request->file('image')->store('posts', 'public');
-        }
-
-        $data['published_at'] = $request->has('published') ? now() : null;
-
-        $post->update($data);
-
+        $this->postService->update($post, $request->validated());
         return redirect()->route('admin.posts.index')->with('success', 'Пост успешно обновлен!');
     }
 
@@ -111,8 +78,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post): RedirectResponse
     {
-        $post->delete();
-
+        $this->postService->delete($post);
         return redirect()->route('admin.posts.index')->with('success', 'Пост успешно удален!');
     }
 }
