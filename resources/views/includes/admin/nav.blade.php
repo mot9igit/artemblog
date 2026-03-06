@@ -152,23 +152,23 @@
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
 
                         <img
-                            src="/images/no-photo.jpg"
+                            src="/img/no-photo.jpg"
                             class="user-image rounded-circle shadow"
                             alt="User Image"
                         />
-                    <span class="d-none d-md-inline">User</span>
+                    <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                     <!--begin::User Image-->
                     <li class="user-header text-bg-primary">
                             <img
-                                src="/images/no-photo.jpg"
+                                src="/img/no-photo.jpg"
                                 class="rounded-circle shadow"
                                 alt="User Image"
                             />
                         <p>
-                            Петропавловский Артем
-                            <small>В системе с 05.06.1992 </small>
+                            {{ Auth::user()->name }}
+                            <small>В системе с {{ Auth::user()->created_at->format('d.m.Y') }} </small>
                         </p>
                     </li>
                     <!--end::User Image-->

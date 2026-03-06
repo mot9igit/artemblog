@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Post;
-use App\Repositories\PostRepository\PostRepositoryInterface;
+use App\Repositories\Interfaces\PostRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 

@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
-use App\Repositories\PostRepository\PostRepositoryInterface;
-use Illuminate\Http\Request;
+use App\Repositories\Interfaces\PostRepositoryInterface;
 use Illuminate\View\View;
 
 class PostController extends Controller

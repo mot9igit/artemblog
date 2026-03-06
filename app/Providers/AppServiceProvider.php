@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
+use App\Repositories\Interfaces\PostRepositoryInterface;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\PostRepository;
-use App\Repositories\PostRepository\PostRepositoryInterface;
+use App\Repositories\UserRepository;
+use App\Services\AuthService;
+use App\Services\Interfaces\AuthServiceInterface;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(PostRepositoryInterface::class, PostRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(AuthServiceInterface::class, AuthService::class);
     }
 
     /**
