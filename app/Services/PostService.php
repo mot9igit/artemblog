@@ -3,18 +3,21 @@
 namespace App\Services;
 
 use App\Models\Post;
+use App\Repositories\Interfaces\PostRepositoryInterface;
+use App\Repositories\PostRepository;
+use App\Services\Interfaces\PostServiceInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class PostService
+class PostService implements PostServiceInterface
 {
     /**
      * Create a new class instance.
      */
-    public function __construct()
-    {
-        //
-    }
+    public function __construct(
+        private readonly PostRepositoryInterface $postRepository,
+    )    {}
 
     public function create(array $data): Post
     {
@@ -82,5 +85,42 @@ class PostService
             Storage::disk('public')->delete($post->image);
         }
         $post->delete();
+    }
+
+    public function getPaginatedApi(int $perPage): array{
+        return $this->postRepository->getPaginatedApi($perPage);
+    }
+
+    public function getAllApi(): Collection
+    {
+        return $this->postRepository->allApi();
+    }
+
+    public function getByIdApi(int $id): ?Post
+    {
+        return $this->postRepository->findApi($id);
+    }
+
+    public function createApi(array $data): Post
+    {
+        return $this->postRepository->createApi($data);
+    }
+
+    public function updateApi(int $id, array $data): ?Post
+    {
+        $post = $this->postRepository->findApi($id);
+        if(!$post){
+            return null;
+        }
+        return $this->postRepository->updateApi($post, $data);
+    }
+
+    public function deleteApi(int $id): bool
+    {
+        $post = $this->postRepository->findApi($id);
+        if(!$post){
+            return false;
+        }
+        return $this->postRepository->deleteApi($post);
     }
 }

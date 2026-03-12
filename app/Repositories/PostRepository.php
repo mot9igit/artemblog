@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Post;
 use App\Repositories\Interfaces\PostRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class PostRepository implements PostRepositoryInterface
@@ -15,6 +16,21 @@ class PostRepository implements PostRepositoryInterface
     public function __construct()
     {
         //
+    }
+
+    public function getPaginatedApi(int $perPage): array
+    {
+        $posts = Post::query()->latest()->paginate($perPage);
+
+        return [
+            'data' => $posts->items(),
+            'meta' => [
+                'current_page' => $posts->currentPage(),
+                'last_page' => $posts->lastPage(),
+                'per_page' => $posts->perPage(),
+                'total' => $posts->total()
+            ]
+        ];
     }
 
     public function getAdminPaginatedPosts(?string $search, int $perPage): LengthAwarePaginator
@@ -63,5 +79,31 @@ class PostRepository implements PostRepositoryInterface
         DB::transaction(function () use ($post) {
 
         });
+    }
+
+    public function allApi(): Collection
+    {
+        return Post::latest()->get();
+    }
+
+    public function findApi(int $id): ?Post
+    {
+        return Post::find($id);
+    }
+
+    public function createApi(array $data): Post
+    {
+        return Post::create($data);
+    }
+
+    public function updateApi(Post $post, array $data): Post
+    {
+        $post->update($data);
+        return $post;
+    }
+
+    public function deleteApi(Post $post): bool
+    {
+        return $post->delete();
     }
 }

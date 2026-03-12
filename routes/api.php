@@ -16,3 +16,7 @@ Route::prefix('auth')->group(function (): void {
 
 Route::get('posts', [PostController::class, 'index'])->name('api.posts.index');
 Route::get('posts/{id}', [PostController::class, 'show'])->name('api.posts.show');
+
+Route::middleware('auth:sanctum')->group(function () {
+   Route::apiResource('posts', PostController::class)->except('create', 'edit');
+});
